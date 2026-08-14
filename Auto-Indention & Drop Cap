@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Drop Cap Editor</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            font-family: "Georgia", serif; /* Serif fonts look best for drop caps */
+            background-color: #ffffff;
+        }
+        
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            height: -webkit-fill-available;
+        }
+
+        .editor-box {
+            flex: 1;
+            width: 100%;
+            padding: 24px;
+            box-sizing: border-box;
+            font-size: 18px;
+            line-height: 1.7;
+            outline: none;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* TARGETS ONLY THE VERY FIRST PARAGRAPH */
+        .editor-box p:first-of-type {
+            text-indent: 0; /* No indent needed when a drop cap is present */
+        }
+
+        /* TARGETS THE FIRST LETTER OF THE FIRST PARAGRAPH */
+        .editor-box p:first-of-type::first-letter {
+            font-size: 55px;
+            font-weight: bold;
+            float: left;
+            line-height: 42px;
+            padding-top: 4px;
+            padding-right: 8px;
+            padding-left: 3px;
+            color: #0071e3; /* Elegant blue accent color */
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+
+        /* TARGETS ALL FOLLOW-UP PARAGRAPHS (Auto-Indentation) */
+        .editor-box p ~ p {
+            text-indent: 35px; 
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .button-bar {
+            padding: 12px 20px;
+            background-color: #f5f5f7;
+            border-top: 1px solid #e5e5e7;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background-color: #0071e3;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <div class="editor-box" contenteditable="true" id="myEditor">
+            <p>Once upon a time, you decided to build your own full-screen writing tool. The first letter of this paragraph automatically converts into a beautiful drop cap layout as you type your text.</p>
+            <p>This is the second paragraph. Notice how it ignores the drop cap rule and applies your standard auto-indentation layout instead, keeping your styling clean and orderly.</p>
+        </div>
+
+        <div class="button-bar">
+            <button onclick="copyText()">Copy All Text</button>
+        </div>
+    </div>
+
+    <script>
+        function copyText() {
+            var editor = document.getElementById("myEditor");
+            navigator.clipboard.writeText(editor.innerText);
+            
+            var btn = document.querySelector("button");
+            var originalText = btn.innerText;
+            btn.innerText = "✓ Copied!";
+            btn.style.backgroundColor = "#34c759";
+            
+            setTimeout(function() {
+                btn.innerText = originalText;
+                btn.style.backgroundColor = "#0071e3";
+            }, 2000);
+        }
+    </script>
+
+</body>
+</html>
